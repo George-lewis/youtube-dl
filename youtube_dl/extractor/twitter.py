@@ -539,6 +539,10 @@ class TwitterIE(TwitterBaseIE):
                 else:
                     is_amplify = card_name == 'amplify'
                     vmap_url = get_binding_value('amplify_url_vmap') if is_amplify else get_binding_value('player_stream_url')
+
+                    if vmap_url is None:
+                        raise ExtractorError("There's no video in this tweet.")
+
                     content_id = get_binding_value('%s_content_id' % (card_name if is_amplify else 'player'))
                     formats = self._extract_formats_from_vmap_url(vmap_url, content_id or twid)
                     self._sort_formats(formats)
